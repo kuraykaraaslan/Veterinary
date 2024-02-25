@@ -31,7 +31,6 @@ import com.veterinary.management.entities.Animal;
 import com.veterinary.management.repositories.AnimalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +59,9 @@ public class AnimalService {
 
     public List<Animal> getAnimals() {
         return animalRepository.findAll();
+    }
+
+    public List<Animal> getAnimalByName(String name) {
+        return animalRepository.findByName(name);
     }
 }

@@ -26,6 +26,7 @@ import com.veterinary.management.entities.Animal;
 import com.veterinary.management.entities.Veterinarian;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 
 @Repository
@@ -39,6 +40,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     Appointment findAppointmentByDescription(String description);
     Appointment findAppointmentByStatus(String status);
     Appointment findAppointmentByPrice(Double price);
+    List<Appointment> findAppointmentsByDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Appointment> findAppointmentsByVeterinarianId(Long id);
     
 }
 

@@ -11,6 +11,9 @@
  * /api/animals/{animalId}/appointments - GET: get all the appointments of an animal, Returns ResponseEntity<List<Appointment>>
  * /api/animals/{animalId}/customer - GET: get the customer of an animal, Returns ResponseEntity<Customer>
  * /api/animals/{animalId}/vaccinations - GET: get the vaccinations of an animal, Returns ResponseEntity<List<Vaccination>>
+ * 
+ * Search:
+ * /api/animals/search - GET: search for an animal by its name, Returns ResponseEntity<List<Animal>>
  */
 
 
@@ -158,6 +161,19 @@ public class AnimalController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(animal.getVaccinations(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * This method is used to search for an animal by its name
+     */
+    @GetMapping(path = "search")
+    public ResponseEntity<?> searchAnimalByName(@RequestParam String name) {
+        try {
+            List<Animal> animals = animalService.getAnimalByName(name);
+            return new ResponseEntity<>(animals, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

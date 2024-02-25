@@ -2,7 +2,6 @@ package com.veterinary.management.services;
 
 import java.util.List;
 
-import com.veterinary.management.entities.Veterinarian;
 import com.veterinary.management.entities.WorkingDay;
 import com.veterinary.management.repositories.WorkingDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;

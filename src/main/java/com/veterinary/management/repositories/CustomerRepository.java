@@ -18,6 +18,8 @@ package com.veterinary.management.repositories;
 
 import com.veterinary.management.entities.Customer;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +33,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Customer findCustomerByEmail(String email);
 
     Customer findCustomerByPhoneNumber(String phoneNumber);
+
+    List<Customer> findCustomersByName(String name);
 
 }
 

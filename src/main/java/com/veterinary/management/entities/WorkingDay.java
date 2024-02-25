@@ -3,7 +3,8 @@
  * Attributes:
  * id: Long - the id of the working day
  * vetenerian: Vetenerian - the vetenerian that works on the day
- * day: String - the day of the week
+ * startDate: LocalDate - the start date of the working day
+ * endDate: LocalDate - the end date of the working day
 */
 
 package com.veterinary.management.entities;
@@ -25,7 +26,8 @@ public class WorkingDay {
     @Id
     @GeneratedValue
     private Long id;
-    private LocalDate day;
+    private LocalDate startDate;
+    private LocalDate endDate;
     
     @ManyToOne
     @JoinColumn

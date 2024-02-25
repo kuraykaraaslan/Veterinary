@@ -25,11 +25,13 @@
 
 package com.veterinary.management.services;
 
+import com.veterinary.management.entities.Animal;
 import com.veterinary.management.entities.Vaccination;
 import com.veterinary.management.repositories.VaccinationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -59,6 +61,15 @@ public class VaccinationService {
 
     public Vaccination getVaccinationById(Long vaccinationId) {
         return vaccinationRepository.findById(vaccinationId).orElse(null);
+    }
+
+    public List<Vaccination> searchVaccinationsByDateRange(LocalDate startDate, LocalDate endDate) {
+        return vaccinationRepository.findVaccinationsByExpirationDateBetween(startDate, endDate);
+    }
+
+    public List<Vaccination> getVaccinationsForAnimal(Animal animal) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVaccinationsForAnimal'");
     }
 
 }

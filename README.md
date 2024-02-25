@@ -62,6 +62,8 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - Sub-resources:
   - `GET /api/customers/{id}/animals`: Get all animals of a customer by ID.
   - `GET /api/customers/{id}/appointments`: Get all appointments of a customer by ID.
+  - Search:
+    - `GET /api/customers/search` with query parameter `name`: Get all customers by name.
 
 - **Animals**:
   - `GET /api/animals`: Get all animals.
@@ -73,6 +75,8 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
     - `GET /api/animals/{id}/vaccinations`: Get all vaccinations of an animal by ID.
     - `GET /api/animals/{id}/appointments`: Get all appointments of an animal by ID.
     - `GET /api/animals/{id}/customer`: Get the customer of an animal by ID.
+  - Search:
+    - `GET /api/animals/search` with query parameter `name`: Get all animals by name.
 
 - **Vaccinations**:
   - `GET /api/vaccinations`: Get all vaccinations.
@@ -96,6 +100,10 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
     - `GET /api/appointments/{id}/animal`: Get the animal of an appointment by ID.
     - `GET /api/appointments/{id}/customer`: Get the customer of an appointment by ID.
     - `GET /api/appointments/{id}/veterinarian`: Get the veterinarian of an appointment by ID.
+  - Search:
+    - `GET /api/appointments/search` with query parameters `start_date` and `end_date`: Get all appointments between the given dates.
+    - `GET /api/appointments/search/veterinarian` with query parameter `start_date`, `end_date`, and `veterinarian_id`
+    - `GET /api/appointments/search/animal` with query parameter `start_date`, `end_date`, and `animal_id`
 
 - **Working Days**:
   - `GET /api/working_days`: Get all working days.

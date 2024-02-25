@@ -9,6 +9,9 @@
  * /api/customers/{customerId} - PUT: update a customer, Returns ResponseEntity<Customer>
  * /api/customers/{customerId} - GET: get a customer by its id, Returns ResponseEntity<Customer>
  * /api/customers/{customerId}/animals - GET: get all the animals of a customer, Returns ResponseEntity<List<Animal>>
+ * 
+ * Search:
+ * /api/customers/search - GET: search for a customer by its name, Returns ResponseEntity<List<Customer>>
  */
 
 package com.veterinary.management.controllers;
@@ -143,5 +146,18 @@ public class CustomerController {
         }
         
         return new ResponseEntity<>(customer.getAppointments(), HttpStatus.OK);
+    }
+
+    /*
+     * This method is used to search for a customer by its name
+     */
+    @GetMapping(path = "search")
+    public ResponseEntity<?> searchCustomerByName(@RequestParam String name) {
+        try {
+            List<Customer> customers = customerService.searchCustomerByName(name);
+            return new ResponseEntity<>(customers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

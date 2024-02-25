@@ -46,5 +46,19 @@ public class Veterinarian {
     @JsonIgnore
     private List<WorkingDay> workingDays;
 
+    /*
+     * This method is used to check if the vet is working on a specific date
+     */
+    public boolean isWorking(LocalDate date) {
+        for (WorkingDay workingDay : workingDays) {
+            LocalDate startDate = workingDay.getStartDate();
+            LocalDate endDate = workingDay.getEndDate();
+
+            if (date.isAfter(startDate) && date.isBefore(endDate)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

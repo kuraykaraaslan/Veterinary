@@ -18,11 +18,15 @@ package com.veterinary.management.repositories;
 
 import com.veterinary.management.entities.Vaccination;
 
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VaccinationRepository extends JpaRepository<Vaccination, Long> {
+
+    List<Vaccination> findVaccinationsByExpirationDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

@@ -2,7 +2,8 @@
  * This class is used to create an appointment object
  * Attributes:
  * id: Long - the id of the appointment
- * date: LocalDate - the date of the appointment
+ * startDate: LocalDate - the start date of the appointment
+ * endDate: LocalDate - the end date of the appointment
  * time: LocalTime - the time of the appointment
  * vetenerian: Vetenerian - the vetenerian that will take care of the animal
  * animal: Animal - the animal that will be taken care of
@@ -36,7 +37,10 @@ public class Appointment {
     private Long id;
 
     @Column
-    private LocalDate date;
+    private LocalDate startDate;
+
+    @Column
+    private LocalDate endDate;
 
     @Column
     private LocalTime time;

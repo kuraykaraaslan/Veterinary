@@ -33,6 +33,7 @@ import com.veterinary.management.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -63,5 +64,13 @@ public class AppointmentService {
 
     public Appointment getAppointmentById(Long appointmentId) {
         return appointmentRepository.findById(appointmentId).orElse(null);
+    }
+
+    public List<Appointment> searchAppointmentByDateRange(LocalDate startDate, LocalDate endDate) {
+        return appointmentRepository.findAppointmentsByDateBetween(startDate, endDate);
+    }
+
+    public List<Appointment> getAppointmentsByVeterinarian(Long id) {
+        return appointmentRepository.findAppointmentsByVeterinarianId(id);
     }
 }

@@ -12,7 +12,13 @@
  * /api/appointments/{appointmentId}/animal - GET: get the animal of an appointment, Returns ResponseEntity<Animal>
  * /api/appointments/{appointmentId}/customer - GET: get the customer of an appointment, Returns ResponseEntity<Customer>
  * /api/appointments/{appointmentId}/veterinarian - GET: get the veterinarian of an appointment, Returns ResponseEntity<Veterinarian>
+ * 
+ * Search:
+ * /api/appointments/search - GET: search for an appointment by its date range
+ * /api/appointments/search/animal - GET: search for an appointment by its date range and the animal
+ * /api/appointments/search/veterinarian - GET: search for an appointment by its date range and the veterinarian
  */
+
 package com.veterinary.management.controllers;
 
 import com.veterinary.management.entities.Appointment;
@@ -25,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -57,6 +64,49 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<?> addNewAppointment(@RequestBody Appointment appointment) {
         try {
+
+            //Get the animal, customer and veterinarian of the appointment
+            Animal animal = appointment.getAnimal();
+            Customer customer = appointment.getCustomer();
+            Veterinarian veterinarian = appointment.getVeterinarian();
+
+            //Check if the animal, customer and veterinarian exist
+            if (animal == null || customer == null || veterinarian == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+
+            //Check if the veterinarian is available
+            if (veterinarian.isWorking(appointment.getStartDate())) {
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            // get all the appointments of the veterinarian
+            List<Appointment> appointments = appointmentService.getAppointmentsByVeterinarian(veterinarian.getId());
+
+            //Check if any of the appointments of the veterinarian overlap with the new appointment
+            for (Appointment appointmentExisting : appointments) {
+                //if the new appointment starts before the existing appointment ends, and the new appointment ends after the existing appointment starts
+                if (appointment.getStartDate().isBefore(appointmentExisting.getEndDate()) && appointment.getEndDate().isAfter(appointmentExisting.getStartDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts before the existing appointment starts, and the new appointment ends before the existing appointment ends
+                if (appointment.getStartDate().isBefore(appointmentExisting.getStartDate()) && appointment.getEndDate().isBefore(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts after the existing appointment starts, and the new appointment ends after the existing appointment ends
+                if (appointment.getStartDate().isAfter(appointmentExisting.getStartDate()) && appointment.getEndDate().isAfter(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts after the existing appointment starts, and the new appointment ends before the existing appointment ends
+                if (appointment.getStartDate().isAfter(appointmentExisting.getStartDate()) && appointment.getEndDate().isBefore(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+                           
             appointmentService.addNewAppointment(appointment);
             return new ResponseEntity<>(appointment, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -93,6 +143,42 @@ public class AppointmentController {
             if (appointmentById == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
+            //Check if the veterinarian is available
+            if (appointment.getVeterinarian().isWorking(appointment.getStartDate())) {
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            // get all the appointments of the veterinarian
+            List<Appointment> appointments = appointmentService.getAppointmentsByVeterinarian(appointment.getVeterinarian().getId());
+
+            //Check if any of the appointments of the veterinarian overlap with the new appointment
+            for (Appointment appointmentExisting : appointments) {
+                // if the appointment is the same as the existing appointment, skip it
+                if (appointment.getId().equals(appointmentExisting.getId())) {
+                    continue;
+                }
+                //if the new appointment starts before the existing appointment ends, and the new appointment ends after the existing appointment starts
+                if (appointment.getStartDate().isBefore(appointmentExisting.getEndDate()) && appointment.getEndDate().isAfter(appointmentExisting.getStartDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts before the existing appointment starts, and the new appointment ends before the existing appointment ends
+                if (appointment.getStartDate().isBefore(appointmentExisting.getStartDate()) && appointment.getEndDate().isBefore(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts after the existing appointment starts, and the new appointment ends after the existing appointment ends
+                if (appointment.getStartDate().isAfter(appointmentExisting.getStartDate()) && appointment.getEndDate().isAfter(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                //if the new appointment starts after the existing appointment starts, and the new appointment ends before the existing appointment ends
+                if (appointment.getStartDate().isAfter(appointmentExisting.getStartDate()) && appointment.getEndDate().isBefore(appointmentExisting.getEndDate())) {
+                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+            
             appointmentService.updateAppointment(appointment);
             return new ResponseEntity<>(appointment, HttpStatus.OK);
         } catch (Exception e) {
@@ -166,6 +252,50 @@ public class AppointmentController {
             }
             Veterinarian veterinarian = appointment.getVeterinarian();
             return new ResponseEntity<>(veterinarian, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * This method is used to search for an appointment by its date range, and the animal
+     */
+    @GetMapping(path = "search")
+    public ResponseEntity<?> searchAppointmentByDateRange(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        try {
+            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
+            return new ResponseEntity<>(appointments, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * This method is used to search for an appointment by its date range, and the animal
+     */
+    @GetMapping(path = "search/animal")
+    public ResponseEntity<?> searchAppointmentByDateRangeAndAnimal(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long animalId) {
+        try {
+            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
+            
+            //Filter the appointments by the animal
+            appointments.removeIf(appointment -> !appointment.getAnimal().getId().equals(animalId));
+            return new ResponseEntity<>(appointments, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * This method is used to search for an appointment by its date range, and the veterinarian
+     */
+    @GetMapping(path = "search/veterinarian")
+    public ResponseEntity<?> searchAppointmentByDateRangeAndVeterinarian(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long veterinarianId) {
+        try {
+            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
+            //Filter the appointments by the veterinarian
+            appointments.removeIf(appointment -> !appointment.getVeterinarian().getId().equals(veterinarianId));
+            return new ResponseEntity<>(appointments, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
