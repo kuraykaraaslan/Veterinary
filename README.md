@@ -35,12 +35,16 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 ## API Endpoints
 
-- **Veterinarians**:
-  - `GET /api/veterinarians`: Get all veterinarians.
-  - `POST /api/veterinarians`: Create a new veterinarian.
-  - `GET /api/veterinarians/{id}`: Get details of a veterinarian by ID.
-  - `PUT /api/veterinarians/{id}`: Update details of a veterinarian.
-  - `DELETE /api/veterinarians/{id}`: Delete a veterinarian by ID.
+- **Doctors**:
+  - `GET /api/doctors`: Get all veterinarians.
+  - `POST /api/doctors`: Create a new veterinarian.
+  - `GET /api/doctors/{id}`: Get details of a veterinarian by ID.
+  - `PUT /api/doctors/{id}`: Update details of a veterinarian.
+  - `DELETE /api/doctors/{id}`: Delete a veterinarian by ID.
+  - `GET /api/doctors/{id}/appointments`: Get all appointments of a veterinarian by ID.
+  - `GET /api/doctors/{id}/working-days`: Get all working days of a veterinarian by ID.
+  - `POST /api/doctors/{id}/working-days`: Add a working day for a veterinarian by ID.
+  - `DELETE /api/doctors/{id}/working-days/{day}`: Delete a working day for a veterinarian by ID.
 
 - **Customers**:
   - `GET /api/customers`: Get all customers.
@@ -48,6 +52,7 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/customers/{id}`: Get details of a customer by ID.
   - `PUT /api/customers/{id}`: Update details of a customer.
   - `DELETE /api/customers/{id}`: Delete a customer by ID.
+  - `GET /api/customers/{id}/animals`: Get all animals of a customer by ID.
 
 - **Animals**:
   - `GET /api/animals`: Get all animals.
@@ -55,6 +60,8 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/animals/{id}`: Get details of an animal by ID.
   - `PUT /api/animals/{id}`: Update details of an animal.
   - `DELETE /api/animals/{id}`: Delete an animal by ID.
+  - `GET /api/animals/{id}/vaccinations`: Get all vaccinations of an animal by ID.
+  - `POST /api/animals/{id}/vaccinations`: Add a vaccination for an animal by ID. **Check for vaccine protection date**.
 
 - **Vaccinations**:
   - `GET /api/vaccinations`: Get all vaccinations.
@@ -69,6 +76,20 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/appointments/{id}`: Get details of an appointment by ID.
   - `PUT /api/appointments/{id}`: Update details of an appointment.
   - `DELETE /api/appointments/{id}`: Delete an appointment by ID.
+
+- **Search**:
+  - `GET /api/search/veterinarians`: Search veterinarians by name.
+  - `GET /api/search/customers`: Search customers by name.
+  - `GET /api/search/animals`: Search animals by name.
+  - `GET /api/search/vaccinations`: Search vaccinations by name.
+  - `GET /api/search/appointments`: Search appointments by date, veterinarian.
+
+## UML Diagram
+
+The UML diagram below shows the class diagram of the Veterinary Management System.
+
+![UML Diagram](/static/uml.jpeg)
+
 
 ## Sample Data
 
