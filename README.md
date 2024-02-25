@@ -90,6 +90,25 @@ The UML diagram below shows the class diagram of the Veterinary Management Syste
 
 ![UML Diagram](/static/uml.jpeg)
 
+## Database Tables
+
+The application uses the following tables in the PostgreSQL database:
+
+- **doctors**: Stores veterinarian details.
+- **working_days**: Stores working days of veterinarians.
+- **customers**: Stores customer details.
+- **animals**: Stores animal details.
+- **vaccinations**: Stores vaccination details.
+- **appointments**: Stores appointment details.
+
+The tables are related to each other using foreign keys for data integrity.
+
+- **doctors** and **working_days**: One-to-Many relationship.
+- **customers** and **animals**: One-to-Many relationship.
+- **animals** and **vaccinations**: One-to-Many relationship.
+- **doctors** and **appointments**: One-to-Many relationship.
+
+
 
 ## Sample Data
 
