@@ -49,9 +49,9 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/veterinarians/{id}`: Get details of a veterinarian by ID.
   - `PUT /api/veterinarians/{id}`: Update details of a veterinarian.
   - `DELETE /api/veterinarians/{id}`: Delete a veterinarian by ID.
-  - `GET /api/veterinarians/{id}/working-days`: Get all working days of a veterinarian by ID.
-  - `POST /api/veterinarians/{id}/working-days`: Add a working day for a veterinarian by ID.
-  - `DELETE /api/veterinarians/{id}/working-days/{day}`: Delete a working day for a veterinarian by ID.
+  - Sub-resources:
+  - `GET /api/veterinarians/{id}/working_days`: Get all working days of a veterinarian by ID.
+
 
 - **Customers**:
   - `GET /api/customers`: Get all customers.
@@ -59,7 +59,9 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/customers/{id}`: Get details of a customer by ID.
   - `PUT /api/customers/{id}`: Update details of a customer.
   - `DELETE /api/customers/{id}`: Delete a customer by ID.
+  - Sub-resources:
   - `GET /api/customers/{id}/animals`: Get all animals of a customer by ID.
+  - `GET /api/customers/{id}/appointments`: Get all appointments of a customer by ID.
 
 - **Animals**:
   - `GET /api/animals`: Get all animals.
@@ -67,8 +69,10 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/animals/{id}`: Get details of an animal by ID.
   - `PUT /api/animals/{id}`: Update details of an animal.
   - `DELETE /api/animals/{id}`: Delete an animal by ID.
-  - `GET /api/animals/{id}/vaccinations`: Get all vaccinations of an animal by ID.
-  - `POST /api/animals/{id}/vaccinations`: Add a vaccination for an animal by ID. **Check for vaccine protection date**.
+  - Sub-resources:
+    - `GET /api/animals/{id}/vaccinations`: Get all vaccinations of an animal by ID.
+    - `GET /api/animals/{id}/appointments`: Get all appointments of an animal by ID.
+    - `GET /api/animals/{id}/customer`: Get the customer of an animal by ID.
 
 - **Vaccinations**:
   - `GET /api/vaccinations`: Get all vaccinations.
@@ -76,6 +80,10 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/vaccinations/{id}`: Get details of a vaccination by ID.
   - `PUT /api/vaccinations/{id}`: Update details of a vaccination.
   - `DELETE /api/vaccinations/{id}`: Delete a vaccination by ID.
+  - Sub-resources:
+    - `GET /api/vaccinations/{id}/appointment`: Get the appointment of a vaccination by ID.
+    - `GET /api/vaccinations/{id}/animal`: Get the animal of a vaccination by ID.
+    - `GET /api/vaccinations/{id}/veterinarian`: Get the veterinarian of a vaccination by ID.
 
 - **Appointments**:
   - `GET /api/appointments`: Get all appointments.
@@ -83,13 +91,19 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
   - `GET /api/appointments/{id}`: Get details of an appointment by ID.
   - `PUT /api/appointments/{id}`: Update details of an appointment.
   - `DELETE /api/appointments/{id}`: Delete an appointment by ID.
+  - Sub-resources:
+    - `GET /api/appointments/{id}/vaccinations`: Get all vaccinations of an appointment by ID.
+    - `GET /api/appointments/{id}/animal`: Get the animal of an appointment by ID.
+    - `GET /api/appointments/{id}/customer`: Get the customer of an appointment by ID.
+    - `GET /api/appointments/{id}/veterinarian`: Get the veterinarian of an appointment by ID.
 
-- **Search**:
-  - `GET /api/search/veterinarians`: Search veterinarians by name.
-  - `GET /api/search/customers`: Search customers by name.
-  - `GET /api/search/animals`: Search animals by name.
-  - `GET /api/search/vaccinations`: Search vaccinations by name.
-  - `GET /api/search/appointments`: Search appointments by date, veterinarian.
+- **Working Days**:
+  - `GET /api/working_days`: Get all working days.
+  - `POST /api/working_days`: Create a new working day.
+  - `GET /api/working_days/{id}`: Get details of a working day by ID.
+  - `PUT /api/working_days/{id}`: Update details of a working day.
+  - `DELETE /api/working_days/{id}`: Delete a working day by ID.
+  
 
 ## UML Diagram
 
