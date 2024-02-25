@@ -43,16 +43,15 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 ## API Endpoints
 
-- **Doctors**:
-  - `GET /api/doctors`: Get all veterinarians.
-  - `POST /api/doctors`: Create a new veterinarian.
-  - `GET /api/doctors/{id}`: Get details of a veterinarian by ID.
-  - `PUT /api/doctors/{id}`: Update details of a veterinarian.
-  - `DELETE /api/doctors/{id}`: Delete a veterinarian by ID.
-  - `GET /api/doctors/{id}/appointments`: Get all appointments of a veterinarian by ID.
-  - `GET /api/doctors/{id}/working-days`: Get all working days of a veterinarian by ID.
-  - `POST /api/doctors/{id}/working-days`: Add a working day for a veterinarian by ID.
-  - `DELETE /api/doctors/{id}/working-days/{day}`: Delete a working day for a veterinarian by ID.
+- **Veterinarians**:
+  - `GET /api/veterinarians`: Get all veterinarians.
+  - `POST /api/veterinarians`: Create a new veterinarian.
+  - `GET /api/veterinarians/{id}`: Get details of a veterinarian by ID.
+  - `PUT /api/veterinarians/{id}`: Update details of a veterinarian.
+  - `DELETE /api/veterinarians/{id}`: Delete a veterinarian by ID.
+  - `GET /api/veterinarians/{id}/working-days`: Get all working days of a veterinarian by ID.
+  - `POST /api/veterinarians/{id}/working-days`: Add a working day for a veterinarian by ID.
+  - `DELETE /api/veterinarians/{id}/working-days/{day}`: Delete a working day for a veterinarian by ID.
 
 - **Customers**:
   - `GET /api/customers`: Get all customers.
@@ -102,7 +101,7 @@ The UML diagram below shows the class diagram of the Veterinary Management Syste
 
 The application uses the following tables in the PostgreSQL database:
 
-- **doctors**: Stores veterinarian details.
+- **veterinarians**: Stores veterinarian details.
 - **working_days**: Stores working days of veterinarians.
 - **customers**: Stores customer details.
 - **animals**: Stores animal details.
@@ -111,12 +110,12 @@ The application uses the following tables in the PostgreSQL database:
 
 The tables are related to each other using foreign keys for data integrity.
 
-- **doctors** and **working_days**: One-to-Many relationship.
+- **veterinarians** and **working_days**: One-to-Many relationship.
 - **customers** and **animals**: One-to-Many relationship.
 - **animals** and **vaccinations**: One-to-Many relationship.
-- **doctors** and **appointments**: One-to-Many relationship.
-
-
+- **appointments** and **vaccinations**: Many-to-One relationship.
+- **appointments** and **veterinarians**: Many-to-One relationship.
+- **appointments** and **animals**: Many-to-One relationship.
 
 ## Sample Data
 

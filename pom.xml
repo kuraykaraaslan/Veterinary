@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.veterinary</groupId>
-	<artifactId>management</artifactId>
+	<artifactId>veterinary</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>management</name>
+	<name>veterinary</name>
 	<description>Veterinary Management</description>
 	<properties>
 		<java.version>17</java.version>
