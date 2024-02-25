@@ -4,6 +4,15 @@
 
 This is a Spring Boot application for managing a veterinary clinic's operations. The system provides APIs for managing veterinarians, customers, animals, vaccinations, and appointments.
 
+## Technologies
+
+[![Java](https://img.shields.io/badge/Java-17-blue)](https://www.java.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5.5-brightgreen)](https://spring.io/projects/spring-boot)
+[![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-2.5.5-brightgreen)](https://spring.io/projects/spring-data-jpa)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13-blue)](https://www.postgresql.org/)
+[![Maven](https://img.shields.io/badge/Maven-3.8.2-blue)](https://maven.apache.org/)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18.22-brightgreen)](https://projectlombok.org/)
+
 ## Features
 
 - **Veterinarian Management**: CRUD operations for veterinarians, managing their working days.
