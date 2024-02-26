@@ -10,15 +10,14 @@
  * deleteAppointment: void - this method is used to delete an appointment
  * updateAppointment: void - this method is used to update an appointment
  * getAppointmentById: Appointment - this method is used to get an appointment by its id
- * getAppointmentByDate: Appointment - this method is used to get an appointment by its date
- * getAppointmentByTime: Appointment - this method is used to get an appointment by its time
- * getAppointmentByAnimal: Appointment - this method is used to get an appointment by its animal
+ * findAppointmentsByDateRange: List<Appointment> - this method is used to find appointments by date range
+ * 
  * 
  * Attributes:
  * id: Long - the id of the appointment
  * date: LocalDate - the date of the appointment
  * time: LocalTime - the time of the appointment
- * vetenerian: Vetenerian - the vetenerian that will take care of the animal
+ * veterinarian: Veterinarian - the veterinarian that will take care of the animal
  * animal: Animal - the animal that will be taken care of
  * customer: Customer - the customer that owns the animal
  * description: String - the description of the appointment
@@ -29,6 +28,7 @@
 package com.veterinary.management.services;
 
 import com.veterinary.management.entities.Appointment;
+import com.veterinary.management.entities.Veterinarian;
 import com.veterinary.management.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,9 +39,9 @@ import java.util.List;
 @Service
 public class AppointmentService {
 
+    @Autowired
     private final AppointmentRepository appointmentRepository;
 
-    @Autowired
     public AppointmentService(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
     }
@@ -66,11 +66,6 @@ public class AppointmentService {
         return appointmentRepository.findById(appointmentId).orElse(null);
     }
 
-    public List<Appointment> searchAppointmentByDateRange(LocalDate startDate, LocalDate endDate) {
-        return appointmentRepository.findAppointmentsByDateBetween(startDate, endDate);
-    }
 
-    public List<Appointment> getAppointmentsByVeterinarian(Long id) {
-        return appointmentRepository.findAppointmentsByVeterinarianId(id);
-    }
+
 }

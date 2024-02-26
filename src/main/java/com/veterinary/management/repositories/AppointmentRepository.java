@@ -7,7 +7,7 @@
  * id: Long - the id of the appointment
  * date: LocalDate - the date of the appointment
  * time: LocalTime - the time of the appointment
- * vetenerian: Vetenerian - the vetenerian that will take care of the animal
+ * veterinarian: Veterinarian - the veterinarian that will take care of the animal
  * animal: Animal - the animal that will be taken care of
  * customer: Customer - the customer that owns the animal
  * description: String - the description of the appointment
@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.veterinary.management.entities.Animal;
 import com.veterinary.management.entities.Veterinarian;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,16 +33,10 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Appointment findAppointmentById(Long id);
-    Appointment findAppointmentByDate(LocalDate date);
-    Appointment findAppointmentByTime(LocalTime time);
-    Appointment findAppointmentByVeterinarian(Veterinarian veterinarian);
-    Appointment findAppointmentByAnimal(Animal animal);
-    Appointment findAppointmentByDescription(String description);
-    Appointment findAppointmentByStatus(String status);
-    Appointment findAppointmentByPrice(Double price);
-    List<Appointment> findAppointmentsByDateBetween(LocalDate startDate, LocalDate endDate);
-    List<Appointment> findAppointmentsByVeterinarianId(Long id);
+    //get by vet id
+    List<Appointment> getAppointmentsByVeterinarian(Veterinarian veterinarian);
+
+    List<Appointment> searchAppointmentsByVeterinarian(Veterinarian veterinarian);  
     
 }
 

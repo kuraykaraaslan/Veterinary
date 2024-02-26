@@ -21,5 +21,5 @@ import com.veterinary.management.entities.Veterinarian;
 @Repository
 public interface WorkingDayRepository extends JpaRepository<WorkingDay, Long> {
 
-    WorkingDay findByVeterinarianAndDay(Veterinarian veterinarian, LocalDate day);
+    WorkingDay findByVeterinarianAndStartDate(Veterinarian veterinarian, LocalDate startDate);
 }

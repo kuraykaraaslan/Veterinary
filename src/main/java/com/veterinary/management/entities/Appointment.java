@@ -5,7 +5,7 @@
  * startDate: LocalDate - the start date of the appointment
  * endDate: LocalDate - the end date of the appointment
  * time: LocalTime - the time of the appointment
- * vetenerian: Vetenerian - the vetenerian that will take care of the animal
+ * veterinarian: Veterinarian - the veterinarian that will take care of the animal
  * animal: Animal - the animal that will be taken care of
  * customer: Customer - the customer that owns the animal
  * description: String - the description of the appointment

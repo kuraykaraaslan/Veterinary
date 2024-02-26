@@ -32,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class AppointmentController {
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
-
+    
     /*
      * This method is used to get all the appointments
      */
@@ -82,7 +83,7 @@ public class AppointmentController {
             }
 
             // get all the appointments of the veterinarian
-            List<Appointment> appointments = appointmentService.getAppointmentsByVeterinarian(veterinarian.getId());
+            List<Appointment> appointments = appointment.getVeterinarian().getAppointments();
 
             //Check if any of the appointments of the veterinarian overlap with the new appointment
             for (Appointment appointmentExisting : appointments) {
@@ -143,14 +144,13 @@ public class AppointmentController {
             if (appointmentById == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-
             //Check if the veterinarian is available
             if (appointment.getVeterinarian().isWorking(appointment.getStartDate())) {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
 
             // get all the appointments of the veterinarian
-            List<Appointment> appointments = appointmentService.getAppointmentsByVeterinarian(appointment.getVeterinarian().getId());
+            List<Appointment> appointments = appointment.getVeterinarian().getAppointments();
 
             //Check if any of the appointments of the veterinarian overlap with the new appointment
             for (Appointment appointmentExisting : appointments) {
@@ -258,44 +258,83 @@ public class AppointmentController {
     }
 
     /*
-     * This method is used to search for an appointment by its date range, and the animal
+     * This method is used to finds for an appointment by its start date range
      */
     @GetMapping(path = "search")
-    public ResponseEntity<?> searchAppointmentByDateRange(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+    public ResponseEntity<?> findAppointmentsByStartDateRange(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         try {
-            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
-            return new ResponseEntity<>(appointments, HttpStatus.OK);
+            // Get all the appointments
+            List<Appointment> appointments = appointmentService.getAppointments();
+            // Create a list to store the appointments that are within the date range
+            List<Appointment> appointmentsInRange = new ArrayList<Appointment>();
+
+            // Loop through the appointments
+            for (Appointment appointment : appointments) {
+                // If the appointment is within the date range, add it to the list
+                if (appointment.getStartDate().isAfter(startDate) && appointment.getEndDate().isBefore(endDate)) {
+                    appointmentsInRange.add(appointment);
+                }
+            }
+
+            return new ResponseEntity<>(appointmentsInRange, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+      
     }
 
+
     /*
-     * This method is used to search for an appointment by its date range, and the animal
+     * This method is used to finds for an appointment by its date range, and the animal
      */
     @GetMapping(path = "search/animal")
-    public ResponseEntity<?> searchAppointmentByDateRangeAndAnimal(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long animalId) {
+    public ResponseEntity<?> findAppointmentsByDateRangeAndAnimal(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long animalId) {
         try {
-            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
+            // Get all the appointments
+            List<Appointment> appointments = appointmentService.getAppointments();
+            // Create a list to store the appointments that are within the date range and have the animal
+            List<Appointment> appointmentsInRange = new ArrayList<Appointment>();
+
+            // Loop through the appointments
+            for (Appointment appointment : appointments) {
+                // If the appointment is within the date range, and has the animal, add it to the list
+                if (appointment.getStartDate().isAfter(startDate) && appointment.getEndDate().isBefore(endDate) && appointment.getAnimal().getId().equals(animalId)) {
             
-            //Filter the appointments by the animal
-            appointments.removeIf(appointment -> !appointment.getAnimal().getId().equals(animalId));
-            return new ResponseEntity<>(appointments, HttpStatus.OK);
+                    if (appointment.getAnimal().getId().equals(animalId)) {
+                        appointmentsInRange.add(appointment);
+                    }
+                }
+            }
+
+            return new ResponseEntity<>(appointmentsInRange, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /*
-     * This method is used to search for an appointment by its date range, and the veterinarian
+     * This method is used to find for an appointment by its date range, and the veterinarian
      */
     @GetMapping(path = "search/veterinarian")
-    public ResponseEntity<?> searchAppointmentByDateRangeAndVeterinarian(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long veterinarianId) {
+    public ResponseEntity<?> findAppointmentsByDateRangeAndVeterinarian(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam Long veterinarianId) {
         try {
-            List<Appointment> appointments = appointmentService.searchAppointmentByDateRange(startDate, endDate);
-            //Filter the appointments by the veterinarian
-            appointments.removeIf(appointment -> !appointment.getVeterinarian().getId().equals(veterinarianId));
-            return new ResponseEntity<>(appointments, HttpStatus.OK);
+            // Get all the appointments
+            List<Appointment> appointments = appointmentService.getAppointments();
+            // Create a list to store the appointments that are within the date range and have the veterinarian
+            List<Appointment> appointmentsInRange = new ArrayList<Appointment>();
+
+            // Loop through the appointments
+            for (Appointment appointment : appointments) {
+                // If the appointment is within the date range, and has the veterinarian, add it to the list
+                if (appointment.getStartDate().isAfter(startDate) && appointment.getEndDate().isBefore(endDate) && appointment.getVeterinarian().getId().equals(veterinarianId)) {
+                    appointmentsInRange.add(appointment);
+                }
+            }
+
+            return new ResponseEntity<>(appointmentsInRange, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
