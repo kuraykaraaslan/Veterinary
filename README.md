@@ -117,7 +117,7 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 The UML diagram below shows the class diagram of the Veterinary Management System.
 
-![UML Diagram](/static/uml.jpeg)
+![UML Diagram](/static/uml.png)
 
 ## Database Tables
 
