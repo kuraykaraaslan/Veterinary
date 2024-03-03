@@ -1,0 +1,62 @@
+/*
+* This class is used to represent the
+* Veterinarian entity.
+* Attributes:
+* id: Long - the id of the Veterinarian
+* name: String - the name of the Veterinarian
+* surname: String - the surname of the Veterinarian
+* dateOfBirth: LocalDate - the date of birth of the vet
+* phoneNumber: String
+* email: String
+* address: String
+*/
+
+package com.veterinary.management.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+@Entity
+@Table (name = "doctor")
+@Getter
+@Setter
+@RequiredArgsConstructor
+@ToString
+public class Doctor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @OneToMany (mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<AvailableDate> availableDates;
+
+    @OneToMany (mappedBy = "doctor")
+    @JsonIgnore
+    private List<Appointment> appointments;
+
+
+}

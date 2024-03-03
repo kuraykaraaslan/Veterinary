@@ -12,44 +12,45 @@
  * appointments: List<Appointment> - the appointments that the customer has
  */
 
-package com.veterinary.management.entities;
+package com.veterinary.management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import java.time.LocalDate;
+import lombok.*;
+
 import java.util.List;
-import java.util.ArrayList;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "customer")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name = "id")
     private Long id;
+
+    @Column (name = "name")
     private String name;
-    private String surname;
-    private LocalDate dateOfBirth;
-    private String phoneNumber;
+
+    @Column (name = "phone")
+    private String phone;
+
+    @Column (name = "email")
     private String email;
+
+    @Column (name = "address")
     private String address;
 
-    @OneToMany
-    @JsonIgnore
-    private List<Animal> animals;
+    @Column(name = "city")
+    private String city;
 
-    public List<Appointment> getAppointments() {
-        List<Animal> animals = getAnimals();
-        List<Appointment> appointments = new ArrayList<>();
-        for (Animal animal : animals) {
-            appointments.addAll(animal.getAppointments());
-        }
-        return appointments;
-    }
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Animal> animals ;
+
 }
-        

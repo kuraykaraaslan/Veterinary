@@ -12,37 +12,44 @@
  * appointments: List<Appointment> - the appointments that have been made for the vaccine
  */
 
-package com.veterinary.management.entities;
+package com.veterinary.management.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDate;
 
+@Table(name = "vaccine")
 @Entity
-@Table(name = "vaccinations")
 @Getter
 @Setter
-@NoArgsConstructor
-public class Vaccination {
+@RequiredArgsConstructor
+@ToString
+public class Vaccine {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String name;
-    private String type;
-    private String description;
-    private Double price;
-    private LocalDate expirationDate;
-    private Integer quantity;
 
-    @OneToOne
-    @JsonIgnore
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "protection_start_date")
+    private LocalDate protectionStartDate;
+
+    @Column(name = "protection_finish_date")
+    private LocalDate protectionFinishDate;
+
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "animal_id")
     private Animal animal;
 
-    @OneToOne
-    @JsonIgnore
-    private Appointment appointment;
 
 }

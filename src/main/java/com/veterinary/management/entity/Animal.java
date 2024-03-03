@@ -14,46 +14,58 @@
 * Vaccinations: List<Vaccination> - the vaccinations that the animal has  
 */
 
-package com.veterinary.management.entities;
+package com.veterinary.management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
 import java.time.LocalDate;
 import java.util.List;
 
+@Table(name = "animal")
 @Entity
-@Table(name = "animals")
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
+@RequiredArgsConstructor
 public class Animal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
-    private String name;
-    private String species;
-    private LocalDate dateOfBirth;
-    private String gender;
-    private String color;
-    private Double weight;
-    private String chipNumber;
 
-    @ManyToOne
-    @JsonIgnore
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "species")
+    private String species;
+
+    @Column(name = "breed")
+    private String breed;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "colour")
+    private String colour;
+
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "Customer_id")
     private Customer customer;
 
-    @OneToMany
+    @OneToMany(mappedBy = "animal",  cascade = CascadeType.REMOVE)
     @JsonIgnore
-    private List<Vaccination> vaccinations;
+    private List<Vaccine> vaccines;
 
-    @OneToMany
+    @OneToMany(mappedBy = "animal")
     @JsonIgnore
-    private List<Appointment> appointments;
-
-
+    List<Appointment> appointments;
 }

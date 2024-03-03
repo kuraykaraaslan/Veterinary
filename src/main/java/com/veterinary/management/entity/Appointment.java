@@ -13,59 +13,34 @@
  * price: Double - the price of the appointment
  */
 
-package com.veterinary.management.entities;
+package com.veterinary.management.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-import java.util.List;
-
-@Table(name = "appointments")
+@Table(name = "appointment")
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Appointment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
-    @Column
-    private LocalDate startDate;
+    @Column(name = "date")
+    private LocalDateTime date;
 
-    @Column
-    private LocalDate endDate;
+    @ManyToOne (fetch = FetchType.EAGER) //Appointment sildiğimizde veya güncellediğimizde doctoru silmemize yada güncellememize gerek olmadığından cascade vermedik.
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
-    @Column
-    private LocalTime time;
-
-    @ManyToOne
-    @JsonIgnore
-    private Veterinarian veterinarian;
-
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "animal_id")
     private Animal animal;
-
-    @Column
-    private String description;
-
-    @Column
-    private String status;
-    @Column
-    private Double price;
-
-    @OneToMany
-    private List<Vaccination> vaccinations;
-
-    public Customer getCustomer() {
-        return animal.getCustomer();
-    }
-
 }

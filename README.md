@@ -14,9 +14,10 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 ## Features
 
-- **Veterinarian Management**: CRUD operations for veterinarians, managing their working days.
+- **Doctor Management**: CRUD operations for doctors and their associated available days.
 - **Customer Management**: CRUD operations for customers and their associated animals.
-- **Vaccination Management**: CRUD operations for vaccinations given to animals, with validation for vaccine protection dates.
+- **Animal Management**: CRUD operations for animals and their associated vaccinations and appointments.
+- **Vaccine Management**: CRUD operations for vaccines.
 - **Appointment Management**: Creating, updating, viewing, and deleting appointments for animal vaccinations and check-ups.
 - **Layered Architecture**: The application is developed following a layered architecture pattern.
 - **Dependency Injection**: Constructor injection is used for Inversion of Control (IoC) and Dependency Injection (DI).
@@ -43,75 +44,14 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 ## API Endpoints
 
-- **Veterinarians**:
-  - `GET /api/veterinarians`: Get all veterinarians.
-  - `POST /api/veterinarians`: Create a new veterinarian.
-  - `GET /api/veterinarians/{id}`: Get details of a veterinarian by ID.
-  - `PUT /api/veterinarians/{id}`: Update details of a veterinarian.
-  - `DELETE /api/veterinarians/{id}`: Delete a veterinarian by ID.
-  - Sub-resources:
-  - `GET /api/veterinarians/{id}/working_days`: Get all working days of a veterinarian by ID.
+- **Doctors**
+-- GET `/doctors`: Get all doctors
+-- GET `/doctors/{id}`: Get doctor by id
+-- POST `/doctors`: Create a new doctor
+-- PUT `/doctors/{id}`: Update doctor
+-- DELETE `/doctors/{id}`: Delete doctor
 
 
-- **Customers**:
-  - `GET /api/customers`: Get all customers.
-  - `POST /api/customers`: Create a new customer.
-  - `GET /api/customers/{id}`: Get details of a customer by ID.
-  - `PUT /api/customers/{id}`: Update details of a customer.
-  - `DELETE /api/customers/{id}`: Delete a customer by ID.
-  - Sub-resources:
-  - `GET /api/customers/{id}/animals`: Get all animals of a customer by ID.
-  - `GET /api/customers/{id}/appointments`: Get all appointments of a customer by ID.
-  - Search:
-    - `GET /api/customers/search` with query parameter `name`: Get all customers by name.
-
-- **Animals**:
-  - `GET /api/animals`: Get all animals.
-  - `POST /api/animals`: Create a new animal.
-  - `GET /api/animals/{id}`: Get details of an animal by ID.
-  - `PUT /api/animals/{id}`: Update details of an animal.
-  - `DELETE /api/animals/{id}`: Delete an animal by ID.
-  - Sub-resources:
-    - `GET /api/animals/{id}/vaccinations`: Get all vaccinations of an animal by ID.
-    - `GET /api/animals/{id}/appointments`: Get all appointments of an animal by ID.
-    - `GET /api/animals/{id}/customer`: Get the customer of an animal by ID.
-  - Search:
-    - `GET /api/animals/search` with query parameter `name`: Get all animals by name.
-
-- **Vaccinations**:
-  - `GET /api/vaccinations`: Get all vaccinations.
-  - `POST /api/vaccinations`: Create a new vaccination.
-  - `GET /api/vaccinations/{id}`: Get details of a vaccination by ID.
-  - `PUT /api/vaccinations/{id}`: Update details of a vaccination.
-  - `DELETE /api/vaccinations/{id}`: Delete a vaccination by ID.
-  - Sub-resources:
-    - `GET /api/vaccinations/{id}/appointment`: Get the appointment of a vaccination by ID.
-    - `GET /api/vaccinations/{id}/animal`: Get the animal of a vaccination by ID.
-    - `GET /api/vaccinations/{id}/veterinarian`: Get the veterinarian of a vaccination by ID.
-
-- **Appointments**:
-  - `GET /api/appointments`: Get all appointments.
-  - `POST /api/appointments`: Create a new appointment.
-  - `GET /api/appointments/{id}`: Get details of an appointment by ID.
-  - `PUT /api/appointments/{id}`: Update details of an appointment.
-  - `DELETE /api/appointments/{id}`: Delete an appointment by ID.
-  - Sub-resources:
-    - `GET /api/appointments/{id}/vaccinations`: Get all vaccinations of an appointment by ID.
-    - `GET /api/appointments/{id}/animal`: Get the animal of an appointment by ID.
-    - `GET /api/appointments/{id}/customer`: Get the customer of an appointment by ID.
-    - `GET /api/appointments/{id}/veterinarian`: Get the veterinarian of an appointment by ID.
-  - Search:
-    - `GET /api/appointments/search` with query parameters `start_date` and `end_date`: Get all appointments between the given dates.
-    - `GET /api/appointments/search/veterinarian` with query parameter `start_date`, `end_date`, and `veterinarian_id`
-    - `GET /api/appointments/search/animal` with query parameter `start_date`, `end_date`, and `animal_id`
-
-- **Working Days**:
-  - `GET /api/working_days`: Get all working days.
-  - `POST /api/working_days`: Create a new working day.
-  - `GET /api/working_days/{id}`: Get details of a working day by ID.
-  - `PUT /api/working_days/{id}`: Update details of a working day.
-  - `DELETE /api/working_days/{id}`: Delete a working day by ID.
-  
 
 ## UML Diagram
 
@@ -123,29 +63,110 @@ The UML diagram below shows the class diagram of the Veterinary Management Syste
 
 The application uses the following tables in the PostgreSQL database:
 
-- **veterinarians**: Stores veterinarian details.
-- **working_days**: Stores working days of veterinarians.
+- **doctors**: Stores doctor details.
+- **available_days**: Stores doctor's available days for consultation.
 - **customers**: Stores customer details.
 - **animals**: Stores animal details.
-- **vaccinations**: Stores vaccination details.
+- **vaccines**: Stores vaccine details.
 - **appointments**: Stores appointment details.
 
 The tables are related to each other using foreign keys for data integrity.
 
-- **veterinarians** and **working_days**: One-to-Many relationship.
-- **customers** and **animals**: One-to-Many relationship.
-- **animals** and **vaccinations**: One-to-Many relationship.
-- **appointments** and **vaccinations**: Many-to-One relationship.
-- **appointments** and **veterinarians**: Many-to-One relationship.
-- **appointments** and **animals**: Many-to-One relationship.
+- **doctors** has a one-to-many relationship with **available_days**.
+- **customers** has a one-to-many relationship with **animals**.
+- **animals** has a many-to-one relationship with **vaccines**.
+- **animals** has a many-to-one relationship with **appointments**.
+
+The database schema is created using the `schema.sql` file, and the sample data is loaded using the `data.sql` file.
+
+## Request Body Templates
+
+The following request body templates are used for creating and updating data in the application.
+
+### Doctor
+  
+  ```json
+  {
+    "id": null,
+    "name": "string",
+    "phone": "string",
+    "email": "string",
+    "address": "string",
+    "city": "string"
+  }
+  ```
+
+### Animal
+
+```json
+{
+  "id": null,
+  "name": "string",
+  "species": "string",
+  "breed": "string",
+  "gender": "string",
+  "color": "string",
+  "dateOfBirth": "yyyy-MM-dd",
+  "customer": null
+}
+```
+
+### Customer
+
+```json
+{
+  "id": null,
+  "name": "string",
+  "phone": "string",
+  "email": "string",
+  "address": "string",
+  "city": "string"
+}
+
+```
+
+### Vaccine
+
+```json
+{
+  "id": null,
+  "name": "string",
+  "code": "string",
+  "protectionStartDate": "yyyy-MM-dd",
+  "protectionFinishDate": "yyyy-MM-dd",
+  "animal": null
+}
+```
+
+### Appointment
+
+```json
+{
+  "id": null,
+  "date": "yyyy-MM-dd HH:mm",
+  "doctorId": null,
+  "animalId": null
+}
+```
+
+### Available Day
+
+```json
+{
+  "id": null,
+  "availableDate": "yyyy-MM-dd",
+  "vetId": null
+}
+```
 
 ## Sample Data
 
-The application provides sample data for veterinarians, customers, animals, vaccinations, and appointments. The sample data is loaded into the database on application startup using the `data.sql` file.
+The application provides sample data for testing and demonstration purposes. The sample data is loaded using the `data.sql` file.
+
 
 ## Conclusion
 
-The Veterinary Management System is a Spring Boot application for managing a veterinary clinic's operations. The system provides APIs for managing veterinarians, customers, animals, vaccinations, and appointments. The application is developed following a layered architecture pattern, with PostgreSQL as the database and Spring Data JPA for data access. The API endpoints are documented for easy integration and usage.
+The Veterinary Management System is a Spring Boot application for managing a veterinary clinic's operations. The system provides APIs for managing doctors, customers, animals, vaccines, and appointments. The application is developed following a layered architecture pattern, with PostgreSQL as the database and Spring Data JPA for data access. The API endpoints are documented for easy integration and usage.
 
 ## License
 
