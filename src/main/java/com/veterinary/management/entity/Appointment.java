@@ -36,7 +36,7 @@ public class Appointment {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @ManyToOne (fetch = FetchType.EAGER) //Appointment sildiğimizde veya güncellediğimizde doctoru silmemize yada güncellememize gerek olmadığından cascade vermedik.
+    @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
