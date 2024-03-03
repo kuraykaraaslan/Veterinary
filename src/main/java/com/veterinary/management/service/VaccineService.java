@@ -3,6 +3,7 @@
  * Attributes:
  * vaccineRepository: VaccineRepository - the repository that manages the vaccine operations
  * modelMapper: ModelMapper - the model mapper that is used to map the vaccine request dto to vaccine
+ * 
  * Methods:
  * findAllVaccines: List<Vaccine> - this method is used to find all the vaccines
  * findVaccineById: Vaccine - this method is used to find a vaccine by its id
@@ -11,7 +12,6 @@
  * createVaccine: Vaccine - this method is used to create a vaccine
  * updateVaccine: Vaccine - this method is used to update a vaccine
  * deleteVaccine: String - this method is used to delete a vaccine
- * 
  */
 package com.veterinary.management.service;
 

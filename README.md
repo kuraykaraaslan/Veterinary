@@ -107,8 +107,9 @@ The following request body templates are used for creating and updating data in 
   "gender": "string",
   "color": "string",
   "dateOfBirth": "yyyy-MM-dd",
-  "customer": null
+  "customerId": "integer"
 }
+
 ```
 
 ### Customer

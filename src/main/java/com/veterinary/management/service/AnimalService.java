@@ -53,16 +53,26 @@ public class AnimalService {
         return animalRepository.findByCustomerId(id);
     }
 
-    public Animal createAnimal(AnimalRequestDto animalRequestDto){
-        Optional<Animal> existAnimalWithSameSpecs = animalRepository.findByNameAndSpeciesAndGenderAndDateOfBirth(animalRequestDto.getName(),animalRequestDto.getSpecies(),animalRequestDto.getGender(),animalRequestDto.getDateOfBirth());
-
-        if (existAnimalWithSameSpecs.isPresent()){
-            throw new RuntimeException(animalRequestDto.getName() + "Animal has already been saved.");
+    public Animal createAnimal(AnimalRequestDto animalRequestDto) {
+        if (animalRequestDto.getDateOfBirth() == null) {
+            throw new IllegalArgumentException("Date of birth cannot be null");
         }
+    
+        Optional<Animal> existAnimalWithSameSpecs = animalRepository.findByNameAndSpeciesAndGenderAndDateOfBirth(
+                animalRequestDto.getName(),
+                animalRequestDto.getSpecies(),
+                animalRequestDto.getGender(),
+                animalRequestDto.getDateOfBirth()
+        );
+    
+        if (existAnimalWithSameSpecs.isPresent()) {
+            //throw new RuntimeException(animalRequestDto.getName() + " Animal has already been saved.");
+        }
+    
         Animal newAnimal = modelMapper.map(animalRequestDto, Animal.class);
         return animalRepository.save(newAnimal);
     }
-
+    
     public Animal updateAnimal (Long id, AnimalRequestDto animalRequestDto){
         Optional<Animal> animalFromDb = animalRepository.findById(id);
         Optional<Animal> existOtherAnimalFromRequest = animalRepository.findByNameAndSpeciesAndGenderAndDateOfBirth(animalRequestDto.getName(),animalRequestDto.getSpecies(),animalRequestDto.getGender(),animalRequestDto.getDateOfBirth());
