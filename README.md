@@ -91,28 +91,33 @@ The following request body templates are used for creating and updating data in 
 ### Doctor
   
   ```json
-  {
-    "id": null,
-    "name": "string",
-    "phone": "string",
-    "email": "string",
-    "address": "string",
-    "city": "string"
-  }
+{
+  "name": "string",
+  "email": "string",
+  "address": "string",
+  "city": "string",
+  "phone": "string"
+}
   ```
 
 ### Animal
 
 ```json
 {
-  "id": null,
   "name": "string",
   "species": "string",
   "breed": "string",
   "gender": "string",
-  "color": "string",
-  "dateOfBirth": "yyyy-MM-dd",
-  "customerId": "integer"
+  "dateOfBirth": "2024-03-04",
+  "colour": "string",
+  "customer": {
+    "id": 0,
+    "name": "string",
+    "phone": "string",
+    "email": "string",
+    "address": "string",
+    "city": "string"
+  }
 }
 
 ```
@@ -121,10 +126,9 @@ The following request body templates are used for creating and updating data in 
 
 ```json
 {
-  "id": null,
   "name": "string",
   "phone": "string",
-  "email": "string",
+  "mail": "string",
   "address": "string",
   "city": "string"
 }
@@ -135,12 +139,19 @@ The following request body templates are used for creating and updating data in 
 
 ```json
 {
-  "id": null,
   "name": "string",
   "code": "string",
-  "protectionStartDate": "yyyy-MM-dd",
-  "protectionFinishDate": "yyyy-MM-dd",
-  "animal": null
+  "protectionStartDate": "2024-03-04",
+  "protectionFinishDate": "2024-03-04",
+  "animalWithoutCustomer": {
+    "id": 0,
+    "name": "string",
+    "species": "string",
+    "breed": "string",
+    "gender": "string",
+    "dateOfBirth": "2024-03-04",
+    "colour": "string"
+  }
 }
 ```
 
@@ -148,10 +159,32 @@ The following request body templates are used for creating and updating data in 
 
 ```json
 {
-  "id": null,
-  "date": "yyyy-MM-dd HH:mm",
-  "doctorId": null,
-  "animalId": null
+  "date": "2024-03-04T18:15:44.549Z",
+  "doctor": {
+    "id": 0,
+    "name": "string",
+    "email": "string",
+    "address": "string",
+    "city": "string",
+    "phone": "string"
+  },
+  "animal": {
+    "id": 0,
+    "name": "string",
+    "species": "string",
+    "breed": "string",
+    "gender": "string",
+    "dateOfBirth": "2024-03-04",
+    "colour": "string",
+    "customer": {
+      "id": 0,
+      "name": "string",
+      "phone": "string",
+      "email": "string",
+      "address": "string",
+      "city": "string"
+    }
+  }
 }
 ```
 
@@ -159,9 +192,15 @@ The following request body templates are used for creating and updating data in 
 
 ```json
 {
-  "id": null,
-  "availableDate": "yyyy-MM-dd",
-  "vetId": null
+  "availableDate": "2024-03-04",
+  "doctor": {
+    "id": 0,
+    "name": "string",
+    "email": "string",
+    "address": "string",
+    "city": "string",
+    "phone": "string"
+  }
 }
 ```
 
