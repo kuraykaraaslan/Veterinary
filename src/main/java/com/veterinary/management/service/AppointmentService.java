@@ -81,11 +81,11 @@ public class AppointmentService {
                 .findByDateAndDoctorId(appointmentRequestDto.getDate(), appointmentRequestDto.getDoctor().getId());
 
         if (existAppointmentWithSameSpecs.isPresent()) {
-            throw new RuntimeException("The Appointment has already been saved.");
+            throw new RuntimeException("Duplicate data. This Appointment has already been registered.");
         }
 
         if (existsAvailableDateByDoctorIdAndDate.isEmpty()) {
-            throw new RuntimeException("The Doctor doesn't work this day.");
+            throw new RuntimeException("The doctor is not available on this date.");
         }
 
         if (!existAppointmentWithDateAndDoctorId.isEmpty()) {
@@ -101,7 +101,7 @@ public class AppointmentService {
         Optional<Appointment> appointmentFromDb = appointmentRepository.findById(id);
 
         if (appointmentFromDb.isEmpty()) {
-            throw new RuntimeException("id:" + id + " Appointment could not found!!!");
+            throw new RuntimeException("id:" + id + "Appointment could not found!!!");
         }
 
         Optional<Appointment> existAppointmentWithSameSpecs = appointmentRepository.findByDateAndDoctorIdAndAnimalId(

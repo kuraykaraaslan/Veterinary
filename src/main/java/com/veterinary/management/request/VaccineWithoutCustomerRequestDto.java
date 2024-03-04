@@ -17,5 +17,4 @@ public class VaccineWithoutCustomerRequestDto {
     private LocalDate protectionStartDate;
     private LocalDate protectionFinishDate;
     private AnimalWithoutCustomerRequestDto animalWithoutCustomer;
-    private Long reportId;
 }

@@ -66,7 +66,7 @@ public class AnimalService {
         );
     
         if (existAnimalWithSameSpecs.isPresent()) {
-            //throw new RuntimeException(animalRequestDto.getName() + " Animal has already been saved.");
+            throw new RuntimeException("Duplicated animal. Possible same animal has already been saved.") ;
         }
     
         Animal newAnimal = modelMapper.map(animalRequestDto, Animal.class);

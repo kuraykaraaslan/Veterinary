@@ -42,6 +42,11 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 4. Build the project using Maven: `mvn clean install`.
 5. Run the application: `mvn spring-boot:run`.
 
+##API Documentation
+
+The API documentation is available at `/docs`.
+
+
 ## API Endpoints
 
 - **Doctors**
