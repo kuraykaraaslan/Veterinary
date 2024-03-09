@@ -1,91 +1,95 @@
-/*
- * This class is responsible for handling the requests related to the animals.
- * It is a parameterized class as it is annotated with the @RestController annotation.
- * 
- * Routes:
- * GET /api/animals
- * GET /api/animals/{id}
- * GET /api/animals/searchByName
- * GET /api/animals/searchByCustomer
- * POST /api/animals
- * PUT /api/animals/{id}
- * DELETE /api/animals/{id}
- */
-
-
 package com.veterinary.management.controllers;
 
+
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.veterinary.management.request.AnimalRequestDto;
-import com.veterinary.management.entity.Animal;
-import com.veterinary.management.service.AnimalService;
 
-import java.util.List;
+import com.veterinary.management.models.Animal;
+import com.veterinary.management.models.Vaccine;
+import com.veterinary.management.services.AnimalService;
+import com.veterinary.management.requests.AnimalRequest;
 
 @RestController
 @RequestMapping("/api/animals")
 @RequiredArgsConstructor
 public class AnimalController {
 
-    public final AnimalService animalService;
+    private final AnimalService animalService;
 
+    /*
+     *  This method handles the request for getting all the animals.
+     */
     @GetMapping
-    public ResponseEntity<List<Animal>> findAllAnimals(){
-        List<Animal> animalList = animalService.findAllAnimals();
-        return ResponseEntity.ok().body(animalList);
+    public ResponseEntity<List<Animal>> getAllAnimals() {
+        return ResponseEntity.ok(animalService.getAllAnimals());
     }
 
+    /*
+     *  This method handles the request for getting an animal by its id.
+     *  @param id the id of the animal.
+     *  @return the animal with the given id.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Animal> findAnimalById (@PathVariable Long id){
-        Animal animal = animalService.findAnimalById(id);
-        if (animal != null){
-            return ResponseEntity.ok().body(animal);
-        }
-        else {
+    public ResponseEntity<Animal> getAnimalById(@PathVariable Long id) {
+        return ResponseEntity.ok(animalService.getAnimalById(id));
+    }
+
+    /*
+     *  This method handles the request for adding a new animal.
+     *  @param animal the request for adding a new animal.
+     *  @return the added animal.
+     */
+    @PostMapping
+    public ResponseEntity<Animal> addAnimal(@RequestBody AnimalRequest animalRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(animalService.addAnimal(animalRequest));
+    }
+
+    /*
+     *  This method handles the request for updating an animal.
+     *  @param id the id of the animal.
+     *  @param animalRequest the request for updating an animal.
+     *  @return the updated animal.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Animal> updateAnimal(@PathVariable Long id, @RequestBody AnimalRequest animalRequest) {
+        return ResponseEntity.ok(animalService.updateAnimal(id, animalRequest));
+    }
+
+    /*
+     *  This method handles the request for deleting an animal.
+     *  @param id the id of the animal.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnimal(@PathVariable Long id) {
+        animalService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /*
+     * This method handles the request for Fİnding animals by name
+     */
+    @GetMapping("/findByName")
+    public ResponseEntity<List<Animal>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(animalService.findByName(name));
+    }
+
+    /*
+     * This method handles the request for getting all the vaccines of an animal.
+     */
+    @GetMapping("/{id}/vaccines")
+    public ResponseEntity<List<Vaccine>> getVaccinesByAnimalId(@PathVariable Long id) {
+        Animal animal = animalService.getAnimalById(id);
+
+        if (animal == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(animal.getVaccines());
     }
-
-    @GetMapping("/searchByName")
-    public ResponseEntity<List<Animal>> findAnimalsByName (@RequestParam String name){
-        List<Animal> animalListSearchByName = animalService.findAnimalsByName(name);
-        return ResponseEntity.ok().body(animalListSearchByName);
-    }
-
-    @GetMapping("/searchByCustomer")
-    public ResponseEntity<List<Animal>> findAnimalsByCustomer (@RequestParam Long id){
-        List<Animal> animalListSearchByCustomer = animalService.findAnimalsByCustomer(id);
-        return ResponseEntity.ok().body(animalListSearchByCustomer);
-    }
-
-    @PostMapping
-    public ResponseEntity<Animal> createAnimal (@RequestBody AnimalRequestDto animalRequestDto){
-        Animal createdAnimal = animalService.createAnimal(animalRequestDto);
-        if (createdAnimal != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdAnimal);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Animal> updateAnimal (@PathVariable Long id, @RequestBody AnimalRequestDto animalRequestDto){
-        Animal updatedAnimal = animalService.updateAnimal(id,animalRequestDto);
-        if (updatedAnimal != null){
-            return ResponseEntity.status(HttpStatus.OK).body(updatedAnimal);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteAnimal(@PathVariable Long id){
-        return animalService.deleteAnimal(id);
-    }
-
 }
+
+

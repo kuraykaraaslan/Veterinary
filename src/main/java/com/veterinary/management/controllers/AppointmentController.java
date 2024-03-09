@@ -1,29 +1,14 @@
-/*
- * This class is used to handle the appointment related requests
- * It is annotated with the @RestController annotation to indicate that it is a controller
- * The AppointmentController class is a parameterized class as it is annotated with the @RestController annotation
- * 
- * Routes:
- * GET /api/appointments
- * GET /api/appointments/{id}
- * GET /api/appointments/searchByDoctorAndDateRange
- * GET /api/appointments/searchByAnimalAndDateRange
- * POST /api/appointments
- * PUT /api/appointments/{id}
- * DELETE /api/appointments/{id}
- */
-
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.veterinary.management.request.AppointmentRequestDto;
-import com.veterinary.management.entity.Appointment;
-import com.veterinary.management.service.AppointmentService;
+import com.veterinary.management.models.Appointment;
+import com.veterinary.management.requests.AppointmentRequest;
+import com.veterinary.management.services.AppointmentService;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,73 +18,69 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
+    /*
+     * This method handles the request for getting all the appointments.
+     * @return a list of all the appointments.
+     */
     @GetMapping
-    public ResponseEntity<List<Appointment>> findAllAppointments() {
-        List<Appointment> appointmentList = appointmentService.findAllAppointments();
-
-        return ResponseEntity.ok().body(appointmentList);
+    public ResponseEntity<List<Appointment>> getAllAppointments() {
+        return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 
+    /*
+     * This method handles the request for getting an appointment by its id.
+     * @param id the id of the appointment.
+     * @return the appointment with the given id.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> findAppointmentById(@PathVariable Long id) {
-        Appointment appointment = appointmentService.findAppointmentById(id);
-        if (appointment != null) {
-            return ResponseEntity.ok().body(appointment);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Appointment> getAppointmentById(@PathVariable Long id) {
+        return ResponseEntity.ok(appointmentService.getAppointmentById(id));
     }
 
-    @GetMapping("/searchByDoctorAndDateRange")
-    public ResponseEntity<List<Appointment>> findAppointmentByDoctorIdAndDateRange(
-            @RequestParam(value = "id", required = false) Long id, @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
-        List<Appointment> appointmentListSearchByDoctorAndDateRange = appointmentService
-                .findAppointmentByDoctorIdAndDateRange(id, startDate, endDate);
-        if (appointmentListSearchByDoctorAndDateRange != null) {
-            return ResponseEntity.ok().body(appointmentListSearchByDoctorAndDateRange);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/searchByAnimalAndDateRange")
-    public ResponseEntity<List<Appointment>> findAppointmentByAnimalIdAndDateRange(
-            @RequestParam(value = "id", required = false) Long id, @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
-        List<Appointment> appointmentListSearchByAnimalAndDateRange = appointmentService
-                .findAppointmentByAnimalIdAndDateRange(id, startDate, endDate);
-        if (appointmentListSearchByAnimalAndDateRange != null) {
-            return ResponseEntity.ok().body(appointmentListSearchByAnimalAndDateRange);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
+    /*
+     * This method handles the request for adding a new appointment.
+     * @param appointment the request for adding a new appointment.
+     * @return the added appointment.
+     */
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentRequestDto appointmentRequestDto) {
-        Appointment createdAppointment = appointmentService.createAppointment(appointmentRequestDto);
-        if (createdAppointment != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdAppointment);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Appointment> addAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(appointmentService.addAppointment(appointmentRequest));
     }
 
+    /*
+     * This method handles the request for updating an appointment.
+     * @param id the id of the appointment.
+     * @param appointmentRequest the request for updating an appointment.
+     * @return the updated appointment.
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Appointment> updateAppointment(@PathVariable Long id,
-            @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentRequestDto);
-        if (updatedAppointment != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(updatedAppointment);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Appointment> updateAppointment(@PathVariable Long id, @RequestBody AppointmentRequest appointmentRequest) {
+        return ResponseEntity.ok(appointmentService.updateAppointment(id, appointmentRequest));
     }
 
+    /*
+     * This method handles the request for deleting an appointment.
+     * @param id the id of the appointment.
+     */
     @DeleteMapping("/{id}")
-    public String deleteAppointment(@PathVariable Long id) {
-        return appointmentService.deleteAppointment(id);
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
+        appointmentService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
+    /*
+     * This method handles the request for getting all the appointments for a specific animal between two dates.
+     */
+    @GetMapping("/findByAnimalIdAndDateBetween")
+    public ResponseEntity<List<Appointment>> findByAnimalIdAndDateBetween(@RequestParam Long animalId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+        return ResponseEntity.ok(appointmentService.findByAnimalIdAndDateBetween(animalId, startDate, endDate));
+    }
+
+    /*
+     * This method handles the request for getting all the appointments for a specific doctor between two dates.
+     */
+    @GetMapping("/findByDoctorIdAndDateBetween")
+    public ResponseEntity<List<Appointment>> findByDoctorIdAndDateBetween(@RequestParam Long doctorId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+        return ResponseEntity.ok(appointmentService.findByDoctorIdAndDateBetween(doctorId, startDate, endDate));
+    }
 }

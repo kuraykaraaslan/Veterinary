@@ -1,25 +1,12 @@
-/*
- * This class is used to handle the requests for the Veterinarian
- * It is annotated with the @RestController annotation to indicate that it is a controller
- * The VeterinarianController class is a parameterized class as it is annotated with the @RestController annotation
- * 
- * Routes:
- * 
- * GET /api/doctors
- * GET /api/doctors/{id}
- * POST /api/doctors
- * PUT /api/doctors/{id}
- * DELETE /api/doctors/{id}
- */
-
-
 package com.veterinary.management.controllers;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import com.veterinary.management.request.DoctorRequestDto;
-import com.veterinary.management.entity.Doctor;
-import com.veterinary.management.service.DoctorService;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.veterinary.management.models.Doctor;
+import com.veterinary.management.requests.DoctorRequest ;
+import com.veterinary.management.services.DoctorService;
 import java.util.List;
 
 @RestController
@@ -27,30 +14,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    public final DoctorService doctorService;
+    private final DoctorService doctorService;
 
+    /*
+     * This method handles the request for getting all the doctors.
+     */
     @GetMapping
-    public List<Doctor> findAllDoctors (){
-        return doctorService.findAllDoctors();
+    public ResponseEntity<List<Doctor>> getAllDoctors() {
+        return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
+    /*
+     * This method handles the request for getting a doctor by its id.
+     * @param id the id of the doctor.
+     * @return the doctor with the given id.
+     */
     @GetMapping("/{id}")
-    public Doctor findDoctorById (@PathVariable Long id){
-        return doctorService.findDoctorById(id);
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
+        return ResponseEntity.ok(doctorService.getDoctorById(id));
     }
 
+    /*
+     * This method handles the request for adding a new doctor.
+     * @param doctor the request for adding a new doctor.
+     * @return the added doctor.
+     */
     @PostMapping
-    public Doctor createDoctor (@RequestBody DoctorRequestDto doctorRequestDto){
-        return doctorService.createDoctor(doctorRequestDto);
+    public ResponseEntity<Doctor> addDoctor(@RequestBody DoctorRequest doctor) {
+        return new ResponseEntity<>(doctorService.addDoctor(doctor), HttpStatus.CREATED);
     }
 
+    /*
+     * This method handles the request for updating a doctor.
+     * @param id the id of the doctor.
+     * @param doctor the request for updating a doctor.
+     * @return the updated doctor.
+     */
     @PutMapping("/{id}")
-    public Doctor updateDoctor (@PathVariable Long id, @RequestBody DoctorRequestDto doctorRequestDto){
-        return doctorService.updateDoctor(id,doctorRequestDto);
+    public ResponseEntity<Doctor> updateDoctor(@PathVariable Long id, @RequestBody DoctorRequest doctor) {
+        return ResponseEntity.ok(doctorService.updateDoctor(id, doctor));
     }
+
+    /*
+     * This method handles the request for deleting a doctor by its id.
+     * @param id the id of the doctor.
+     */
 
     @DeleteMapping("/{id}")
-    public String deleteDoctor(@PathVariable Long id){
-        return doctorService.deleteDoctor(id);
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteById(id);
+        return new ResponseEntity<>("Doctor with id " + id + " has been deleted", HttpStatus.OK);
     }
 }

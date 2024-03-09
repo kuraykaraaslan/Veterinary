@@ -1,27 +1,12 @@
-/*
- * This class is responsible for handling the requests related to the vaccination of the animals.
- * It is a parameterized class as it is annotated with the @RestController annotation.
- * 
- * Routes:
- * GET /api/vaccines
- * GET /api/vaccines/{id}
- * GET /api/vaccines/searchByVaccinationRange
- * GET /api/vaccines/searchByAnimal
- * POST /api/vaccines
- * PUT /api/vaccines/{id}
- * DELETE /api/vaccines/{id}
- */
-
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.veterinary.management.request.VaccineWithoutCustomerRequestDto;
-import com.veterinary.management.entity.Vaccine;
-import com.veterinary.management.service.VaccineService;
-
+import com.veterinary.management.models.Vaccine;
+import com.veterinary.management.requests.VaccineRequest;
+import com.veterinary.management.services.VaccineService;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,59 +17,62 @@ public class VaccineController {
 
     private final VaccineService vaccineService;
 
+    /*
+     * This method handles the request for getting all the vaccines.
+     */
     @GetMapping
-    public ResponseEntity<List<Vaccine>> findAllVaccines(){
-        List<Vaccine> vaccineList = vaccineService.findAllVaccines();
-
-        return ResponseEntity.ok().body(vaccineList);
+    public ResponseEntity<List<Vaccine>> getAllVaccines() {
+        return new ResponseEntity<>(vaccineService.getAllVaccines(), HttpStatus.OK);
     }
 
+    /*
+     * This method handles the request for getting a vaccine by its id.
+     * @param id the id of the vaccine.
+     * @return the vaccine with the given id.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Vaccine> findVaccineById (@PathVariable Long id){
-        Vaccine vaccine = vaccineService.findVaccineById(id);
-        if (vaccine != null){
-            return ResponseEntity.ok().body(vaccine);
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    @GetMapping("/searchByVaccinationRange")
-    public ResponseEntity<List<Vaccine>> findAnimalsByVaccineProtectionFinishDateRange (@RequestParam LocalDate startDate, @RequestParam LocalDate endDate ){
-        List<Vaccine> vaccineListSearchByVaccineProtectionFinishDateRange = vaccineService.findAnimalsByVaccineProtectionFinishDateRange(startDate, endDate);
-        return ResponseEntity.ok().body(vaccineListSearchByVaccineProtectionFinishDateRange);
-    }
-    @GetMapping("/searchByAnimal")
-    public ResponseEntity<List<Vaccine>> findVaccinesByAnimal (@RequestParam Long id){
-        List<Vaccine> vaccineListSearchByAnimal = vaccineService.findVaccinesByAnimal(id);
-        return ResponseEntity.ok().body(vaccineListSearchByAnimal);
+    public ResponseEntity<Vaccine> getVaccineById(@PathVariable Long id) {
+        return new ResponseEntity<>(vaccineService.getVaccineById(id), HttpStatus.OK);
     }
 
+    /*
+     * This method handles the request for adding a new vaccine.
+     * @param vaccine the request for adding a new vaccine.
+     * @return the added vaccine.
+     */
     @PostMapping
-    public ResponseEntity<Vaccine> createVaccine (@RequestBody VaccineWithoutCustomerRequestDto vaccineWithoutCustomerRequestDto){
-        Vaccine createdVaccine = vaccineService.createVaccine(vaccineWithoutCustomerRequestDto);
-        if (createdVaccine != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdVaccine);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Vaccine> addVaccine(@RequestBody VaccineRequest vaccine) {
+        return new ResponseEntity<>(vaccineService.addVaccine(vaccine), HttpStatus.CREATED);
     }
 
+    /*
+     * This method handles the request for updating a vaccine.
+     * @param id the id of the vaccine.
+     * @param vaccine the request for updating a vaccine.
+     * @return the updated vaccine.
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Vaccine> updateVaccine (@PathVariable Long id, @RequestBody VaccineWithoutCustomerRequestDto vaccineWithoutCustomerRequestDto){
-        Vaccine updatedVaccine = vaccineService.updateVaccine(id,vaccineWithoutCustomerRequestDto);
-        if (updatedVaccine != null){
-            return ResponseEntity.status(HttpStatus.OK).body(updatedVaccine);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Vaccine> updateVaccine(@PathVariable Long id, @RequestBody VaccineRequest vaccine) {
+        return new ResponseEntity<>(vaccineService.updateVaccine(id, vaccine), HttpStatus.OK);
     }
 
+    /*
+     * This method handles the request for deleting a vaccine.
+     * @param id the id of the vaccine.
+     * @return the deleted vaccine.
+     */
     @DeleteMapping("/{id}")
-    public String deleteVaccine(@PathVariable Long id){
-        return vaccineService.deleteVaccine(id);
+    public ResponseEntity<Void> deleteVaccine(@PathVariable Long id) {
+        vaccineService.deleteVaccine(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    
+    /*
+     * This method handles the request for getting all the vaccines of an animal between two dates.
+     */
+    @GetMapping("/findVaccinesByAnimalIdAndApplicationDateBetween")
+    public ResponseEntity<List<Vaccine>> findVaccinesByAnimalIdAndApplicationDateBetween(@RequestParam Long animalId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        return new ResponseEntity<>(vaccineService.findVaccinesByAnimalIdAndApplicationDateBetween(animalId, startDate, endDate), HttpStatus.OK);
+    }
 }
