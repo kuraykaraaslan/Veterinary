@@ -30,6 +30,7 @@ import com.veterinary.management.models.Appointment;
 import com.veterinary.management.requests.AppointmentRequest;
 import com.veterinary.management.services.AppointmentService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -91,18 +92,22 @@ public class AppointmentController {
     }
 
     /*
-     * This method handles the request for getting all the appointments for a specific animal between two dates.
+     * This method handles the request for getting all the appointments for a specific doctor between two dates.
+     * Değerlendirme Formu: 20
      */
-    @GetMapping("/findByAnimalIdAndDateBetween")
-    public ResponseEntity<List<Appointment>> findByAnimalIdAndDateBetween(@RequestParam Long animalId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        return ResponseEntity.ok(appointmentService.findByAnimalIdAndDateBetween(animalId, startDate, endDate));
+    @GetMapping("/searchByDoctorAndDateRange")
+    public ResponseEntity<List<Appointment>> findByDoctorIdAndDateRange (@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
+        List<Appointment> appointmentListSearchByDoctorAndDateRange = appointmentService.findByDoctorIdAndDateRange(id, startDate, endDate);
+        return ResponseEntity.ok().body(appointmentListSearchByDoctorAndDateRange);
     }
 
     /*
-     * This method handles the request for getting all the appointments for a specific doctor between two dates.
+     * This method handles the request for getting all the appointments for a specific animal between two dates.
+     * Değerlendirme Formu: 19
      */
-    @GetMapping("/findByDoctorIdAndDateBetween")
-    public ResponseEntity<List<Appointment>> findByDoctorIdAndDateBetween(@RequestParam Long doctorId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        return ResponseEntity.ok(appointmentService.findByDoctorIdAndDateBetween(doctorId, startDate, endDate));
+    @GetMapping("/searchByAnimalAndDateRange")
+    public ResponseEntity<List<Appointment>> findByAnimalIdAndDateRange (@RequestParam Long id,@RequestParam LocalDate startDate,@RequestParam LocalDate endDate){
+        List<Appointment> appointmentListSearchByAnimalAndDateRange = appointmentService.findByAnimalIdAndDateRange(id, startDate, endDate);
+        return ResponseEntity.ok().body(appointmentListSearchByAnimalAndDateRange);
     }
 }

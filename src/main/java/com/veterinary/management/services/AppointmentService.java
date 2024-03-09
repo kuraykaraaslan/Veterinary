@@ -2,6 +2,7 @@ package com.veterinary.management.services;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,6 +59,10 @@ public class AppointmentService {
      * @throws UnsupportedOperationException if there is no animal with the given id
      */
     public Appointment addAppointment(AppointmentRequest appointmentRequest) {
+
+        /*Add a new appointment
+         * Değerlendirme Formu: 17
+         */
         Appointment appointment = new Appointment();
         Doctor doctor = doctorService.getDoctorById(appointmentRequest.getDoctorId());
         if (doctor == null) {
@@ -69,7 +74,19 @@ public class AppointmentService {
             throw new UnsupportedOperationException("There is no animal with the given id");
         }
 
-        // TODO: check if the animal is already in an appointment
+        /*Check if the doctor is available
+         * Değerlendirme Formu: 18
+         */
+        if (!doctor.isDoctorHasAvailableDateOnDate(appointmentRequest.getDate())) {
+            throw new UnsupportedOperationException("Doctor is not available on the given date");
+        }
+
+        /*Check if the doctor is has an appointment on the given date
+         * Değerlendirme Formu: 18
+         */
+        if (doctor.isDoctorHasAppointmentOnDate(appointmentRequest.getDate())) {
+            throw new UnsupportedOperationException("Doctor has an appointment on the given date");
+        }
 
         appointment.setAnimal(animal);
         appointment.setDate(appointmentRequest.getDate());
@@ -169,5 +186,35 @@ public class AppointmentService {
      */
     public List<Appointment> findByDoctorIdAndDateBetween(Long doctorId, LocalDateTime startDate, LocalDateTime endDate) {
         return appointmentRepository.findByDoctorIdAndDateBetween(doctorId, startDate, endDate);
+    }
+
+    /*
+     * This method handles the request for getting all the appointments for a specific doctor between two dates.
+     * 
+     * @param doctorId the id of the doctor.
+     * 
+     * @param startDate the start date.
+     * 
+     * @param endDate the end date.
+     * 
+     * @return the list of all the appointments for the specific doctor between the two dates.
+     */
+    public List<Appointment> findByDoctorIdAndDateRange(Long doctorId, LocalDate startDate, LocalDate endDate) {
+        return appointmentRepository.findByDoctorIdAndDateBetween(doctorId ,startDate.atStartOfDay(), endDate.atStartOfDay());
+    }
+
+    /*
+     * This method handles the request for getting all the appointments for a specific animal between two dates.
+     * 
+     * @param animalId the id of the animal.
+     * 
+     * @param startDate the start date.
+     * 
+     * @param endDate the end date.
+     * 
+     * @return the list of all the appointments for the specific animal between the two dates.
+     */
+    public List<Appointment> findByAnimalIdAndDateRange(Long animalId, LocalDate startDate, LocalDate endDate) {
+        return appointmentRepository.findByAnimalIdAndDateBetween(animalId, startDate.atStartOfDay(), endDate.atStartOfDay());
     }
 }

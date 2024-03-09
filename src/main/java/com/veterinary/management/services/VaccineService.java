@@ -3,6 +3,7 @@ package com.veterinary.management.services;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -62,7 +63,9 @@ public class VaccineService {
             throw new UnsupportedOperationException("Animal with id " + vaccineRequest.getAnimalId() + " not found");
         }
 
-        //Check if the animal is already vaccinated with the same vaccine and if the expiration date is not passed
+        /*Check if the animal is already vaccinated with the same vaccine and if the expiration date is not passed
+         * Değerlendirme Formu: 22
+         */
         List<Vaccine> vaccines = animal.getVaccines();
         for (Vaccine v : vaccines) {
             if (v.getName().equals(vaccine.getName()) && v.getExpirationDate().isAfter(vaccine.getApplicationDate())) {
@@ -121,13 +124,14 @@ public class VaccineService {
     }
 
     /*
-     * This method returns all vaccines by animal id
-     * @param Long animalId
+     * This method returns all vaccines by application date range
+     * @param LocalDateTime startDate
+     * @param LocalDateTime endDate
      * @return List<Vaccine>
      * 
      */
-    public List<Vaccine> findVaccinesByAnimalIdAndApplicationDateBetween(Long animalId, LocalDate startDate, LocalDate endDate) {
-        return vaccineRepository.findVaccinesByAnimalIdAndApplicationDateBetween(animalId, startDate, endDate);
+    public List<Vaccine> findVaccinesByApplicationDateBetween(LocalDate startDate, LocalDate endDate) {
+        return vaccineRepository.findVaccinesByApplicationDateBetween(startDate, endDate);
     }
 
 }

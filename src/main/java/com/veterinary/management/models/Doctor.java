@@ -83,12 +83,11 @@ public class Doctor {
     }
 
     /*
-     * This method returns true if doctor has appointment on date
+     * This method returns true if doctor has appointment on localDateTime
      */
     public boolean isDoctorHasAppointmentOnDate(LocalDateTime localDateTime) {
-        LocalDate date = localDateTime.toLocalDate();
         for (Appointment appointment : appointments) {
-            if (appointment.getDate().toLocalDate().equals(date)) {
+            if (appointment.getDate().equals(localDateTime)) {
                 return true;
             }
         }

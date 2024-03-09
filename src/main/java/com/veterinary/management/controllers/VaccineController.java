@@ -28,6 +28,7 @@ import com.veterinary.management.models.Vaccine;
 import com.veterinary.management.requests.VaccineRequest;
 import com.veterinary.management.services.VaccineService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -89,10 +90,13 @@ public class VaccineController {
 
     
     /*
-     * This method handles the request for getting all the vaccines of an animal between two dates.
+     * This method handles the request for getting all the vaccines of between two dates.
+     * Değerlendirme Formu: 23
      */
-    @GetMapping("/findVaccinesByAnimalIdAndApplicationDateBetween")
-    public ResponseEntity<List<Vaccine>> findVaccinesByAnimalIdAndApplicationDateBetween(@RequestParam Long animalId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-        return new ResponseEntity<>(vaccineService.findVaccinesByAnimalIdAndApplicationDateBetween(animalId, startDate, endDate), HttpStatus.OK);
+    @GetMapping("/searchByVaccinationRange")
+    public ResponseEntity<List<Vaccine>> findVaccinesByApplicationDateBetween(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+
+        List<Vaccine> vaccineListSearchByVaccinationRange = vaccineService.findVaccinesByApplicationDateBetween(startDate, endDate);
+        return ResponseEntity.ok().body(vaccineListSearchByVaccinationRange);
     }
 }
