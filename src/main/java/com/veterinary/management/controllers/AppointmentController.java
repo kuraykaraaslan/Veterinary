@@ -1,3 +1,25 @@
+/*
+ * This class represents the controller for the appointments.
+ * It handles the requests for the appointments.
+ * 
+ * It has the following methods:
+ * - getAllAppointments: This method handles the request for getting all the appointments.
+ * - getAppointmentById: This method handles the request for getting an appointment by its id.
+ * - addAppointment: This method handles the request for adding a new appointment.
+ * - updateAppointment: This method handles the request for updating an appointment.
+ * - deleteAppointment: This method handles the request for deleting an appointment.
+ * - findByAnimalIdAndDateBetween: This method handles the request for getting all the appointments for a specific animal between two dates.
+ * - findByDoctorIdAndDateBetween: This method handles the request for getting all the appointments for a specific doctor between two dates.
+ * 
+ * It has the following routes:
+ * - GET /api/appointments
+ * - GET /api/appointments/{id}
+ * - POST /api/appointments
+ * - PUT /api/appointments/{id}
+ * - DELETE /api/appointments/{id}
+ * - GET /api/appointments/findByAnimalIdAndDateBetween
+ * - GET /api/appointments/findByDoctorIdAndDateBetween
+ */
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;

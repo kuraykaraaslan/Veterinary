@@ -1,3 +1,25 @@
+/*
+ * This class is the controller for the animal entity.
+ * It handles the requests for the animal entity.
+ * 
+ * It has the following methods:
+ * - getAllAnimals: This method handles the request for getting all the animals.
+ * - getAnimalById: This method handles the request for getting an animal by its id.
+ * - addAnimal: This method handles the request for adding a new animal.
+ * - updateAnimal: This method handles the request for updating an animal.
+ * - deleteAnimal: This method handles the request for deleting an animal.
+ * - findByName: This method handles the request for finding animals by name.
+ * - getVaccinesByAnimalId: This method handles the request for getting all the vaccines of an animal.
+ * 
+ * It has the following routes:
+ * - GET /api/animals
+ * - GET /api/animals/{id}
+ * - POST /api/animals
+ * - PUT /api/animals/{id}
+ * - DELETE /api/animals/{id}
+ * - GET /api/animals/findByName
+ * - GET /api/animals/{id}/vaccines
+ */
 package com.veterinary.management.controllers;
 
 

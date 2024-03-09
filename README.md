@@ -38,8 +38,9 @@ This is a Spring Boot application for managing a veterinary clinic's operations.
 
 ## API Documentation
 
-The API documentation is available at `/docs` with Swagger UI. The documentation provides details about the API endpoints, request and response bodies, and sample requests.
+The API documentation is available at `/swagger-ui/index.html` with Swagger UI. The documentation provides details about the API endpoints, request and response bodies, and sample requests.
 
+![Swagger](/static/docs.png)
 
 
 ## UML Diagram

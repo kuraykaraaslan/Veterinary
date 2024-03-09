@@ -1,3 +1,23 @@
+/*
+ * This class is the controller for the vaccines.
+ * It handles the requests for the vaccines.
+ * 
+ * It has the following methods:
+ * - getAllVaccines: This method handles the request for getting all the vaccines.
+ * - getVaccineById: This method handles the request for getting a vaccine by its id.
+ * - addVaccine: This method handles the request for adding a new vaccine.
+ * - updateVaccine: This method handles the request for updating a vaccine.
+ * - deleteVaccine: This method handles the request for deleting a vaccine.
+ * - findVaccinesByAnimalIdAndApplicationDateBetween: This method handles the request for getting all the vaccines of an animal between two dates.
+ * 
+ * It has the following routes:
+ * - GET /api/vaccines
+ * - GET /api/vaccines/{id}
+ * - POST /api/vaccines
+ * - PUT /api/vaccines/{id}
+ * - DELETE /api/vaccines/{id}
+ * - GET /api/vaccines/findVaccinesByAnimalIdAndApplicationDateBetween
+ */
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;

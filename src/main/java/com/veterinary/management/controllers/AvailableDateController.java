@@ -1,3 +1,21 @@
+/*
+ * This class represents the controller for the appointments.
+ * It handles the requests for the appointments.
+ * 
+ * It has the following methods:
+ * - getAllAvailableDates: This method handles the request for getting all the available dates.
+ * - getAvailableDateById: This method handles the request for getting an available date by its id.
+ * - addAvailableDate: This method handles the request for adding a new available date.
+ * - updateAvailableDate: This method handles the request for updating an available date.
+ * - deleteAvailableDate: This method handles the request for deleting an available date.
+ * 
+ * It has the following routes:
+ * - GET /api/dates
+ * - GET /api/dates/{id}
+ * - POST /api/dates
+ * - PUT /api/dates/{id}
+ * - DELETE /api/dates/{id}
+ */
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;

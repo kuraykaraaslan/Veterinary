@@ -1,3 +1,21 @@
+/*
+ * This class is the controller for the doctor entity.
+ * It handles the requests for the doctor entity.
+ * 
+ * It has the following methods:
+ * - getAllDoctors: This method handles the request for getting all the doctors.
+ * - getDoctorById: This method handles the request for getting a doctor by its id.
+ * - addDoctor: This method handles the request for adding a new doctor.
+ * - updateDoctor: This method handles the request for updating a doctor.
+ * - deleteDoctor: This method handles the request for deleting a doctor.
+ * 
+ * It has the following routes:
+ * - GET /api/doctors
+ * - GET /api/doctors/{id}
+ * - POST /api/doctors
+ * - PUT /api/doctors/{id}
+ * - DELETE /api/doctors/{id}
+ */
 package com.veterinary.management.controllers;
 
 import lombok.RequiredArgsConstructor;

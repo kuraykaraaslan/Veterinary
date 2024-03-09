@@ -1,5 +1,13 @@
 /*
  * This class is a controller that handles the requests for the customer entity.
+ * It has the following methods:
+ * - getAllCustomers: This method handles the request for getting all the customers.
+ * - getCustomerById: This method handles the request for getting a customer by its id.
+ * - addCustomer: This method handles the request for adding a new customer.
+ * - updateCustomer: This method handles the request for updating a customer.
+ * - deleteCustomer: This method handles the request for deleting a customer.
+ * - findByName: This method handles the request for finding a customer by its name.
+ * - getAnimalsByCustomerId: This method handles the request for listing all the animals of a customer.
  * 
  * Routes:
  * - GET /api/customers
@@ -7,6 +15,8 @@
  * - POST /api/customers
  * - PUT /api/customers/{id}
  * - DELETE /api/customers/{id}
+ * - GET /api/customers/{id}/animals
+ * - GET /api/customers/findByName
  */
 package com.veterinary.management.controllers;
 
