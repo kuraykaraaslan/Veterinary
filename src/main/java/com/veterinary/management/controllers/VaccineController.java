@@ -8,7 +8,7 @@
  * - addVaccine: This method handles the request for adding a new vaccine.
  * - updateVaccine: This method handles the request for updating a vaccine.
  * - deleteVaccine: This method handles the request for deleting a vaccine.
- * - findVaccinesByAnimalIdAndApplicationDateBetween: This method handles the request for getting all the vaccines of an animal between two dates.
+ * - searchByVaccinationRange: This method handles the request for getting all the vaccines of between two dates.
  * 
  * It has the following routes:
  * - GET /api/vaccines
@@ -16,7 +16,7 @@
  * - POST /api/vaccines
  * - PUT /api/vaccines/{id}
  * - DELETE /api/vaccines/{id}
- * - GET /api/vaccines/findVaccinesByAnimalIdAndApplicationDateBetween
+ * - GET /api/vaccines/searchByVaccinationRange
  */
 package com.veterinary.management.controllers;
 
